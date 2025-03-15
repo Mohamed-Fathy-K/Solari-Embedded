@@ -8,7 +8,7 @@ typedef enum
   ES_OK ,
   ES_NULL_POINTER,
   ES_OUT_OF_RANGE
-}ES_t;
+}errorState;
 
 
 #endif
