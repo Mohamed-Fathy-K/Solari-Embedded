@@ -10,5 +10,4 @@ typedef enum
   ES_OUT_OF_RANGE
 }errorState;
 
-
 #endif
