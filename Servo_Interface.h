@@ -2,11 +2,11 @@
 #define SERVO_INTERFACE_H_
 
 
-ES_t Servo_enuInit(Servo copy_objServoMotor, u8 copy_u8ServoPin);
+errorState servoInitialization(Servo servoObject, u8 servoPin);
 
-ES_t Servo_enuSetServoAngle(Servo copy_objServoMotor, s16 copy_s16ServoAngle);
+errorState servoSetServoAngle(Servo servoObject, s16 servoAngle);
 
-bool Servo_boolCheckServoAttached(Servo copy_objServoMotor);
+bool servoCheckServoAttached(Servo servoObject);
 
 
 #endif /* SERVO_INTERFACE_H_ */

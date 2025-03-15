@@ -1,36 +1,36 @@
+#include "Arduino.h"
 #include "ERROR_STATE.h"
 #include "STD_TYPES.h"
 #include <Servo.h>
 #include "Servo_Interface.h"
 
-ES_t Servo_enuInit(Servo copy_objServoMotor, u8 copy_u8ServoPin)
+errorState servoInitialization(Servo servoObject, u8 servoPin)
 {
-  ES_t  Local_enuErrorState = ES_NOK;
+  errorState  errorState = ES_NOK;
 
-  copy_objServoMotor.attach(copy_u8ServoPin);
+  servoObject.attach(servoPin);
 
-  if (Servo_boolCheckServoAttached(copy_objServoMotor))
+  if (servoCheckServoAttached(servoObject))
   {
-    Local_enuErrorState = ES_OK;
+    errorState = ES_OK;
   }
 
-  return Local_enuErrorState;
+  return errorState;
 }
 
 
 
-ES_t Servo_enuSetServoAngle(Servo copy_objServoMotor, s16 copy_s16ServoAngle)
+errorState servoSetServoAngle(Servo servoObject, s16 servoAngle)
 {
-  ES_t  Local_enuErrorState = ES_NOK;
-   copy_objServoMotor.write(copy_s16ServoAngle);
-  Local_enuErrorState = ES_OK;
+  errorState  errorState = ES_NOK;
+   servoObject.write(servoAngle);
+  errorState = ES_OK;
 
-  return Local_enuErrorState;
+  return errorState;
 }
 
 
-bool Servo_boolCheckServoAttached(Servo copy_objServoMotor)
+bool static servoCheckServoAttached(Servo servoObject)
 {
-   return copy_objServoMotor.attached();
-
+   return servoObject.attached();
 }
