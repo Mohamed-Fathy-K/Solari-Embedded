@@ -2,11 +2,11 @@
 #define SERVO_INTERFACE_H_
 
 
-errorState servoInitialization(Servo servoObject, u8 servoPin);
+errorState servoInitialization(u8 servoPin);
 
-errorState servoSetServoAngle(Servo servoObject, s16 servoAngle);
+errorState servoSetServoAngle(s16 servoAngle);
 
-bool servoCheckServoAttached(Servo servoObject);
+bool static servoCheckServoAttached();
 
 
 #endif /* SERVO_INTERFACE_H_ */

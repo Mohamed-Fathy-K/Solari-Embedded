@@ -1,16 +1,23 @@
 #include "Arduino.h"
 #include "ERROR_STATE.h"
 #include "STD_TYPES.h"
-#include <Servo.h>
+#include <ESP32Servo.h>
 #include "Servo_Interface.h"
 
-errorState servoInitialization(Servo servoObject, u8 servoPin)
+Servo servoObject;
+
+errorState servoInitialization(u8 servoPin)
 {
   errorState  errorState = ES_NOK;
 
-  servoObject.attach(servoPin);
+  ESP32PWM::allocateTimer(0);
+  ESP32PWM::allocateTimer(1);
+  ESP32PWM::allocateTimer(2);
+  ESP32PWM::allocateTimer(3);
+  servoObject.setPeriodHertz(50);    // standard 50 hz servo
+  servoObject.attach(servoPin, 500, 2400);
 
-  if (servoCheckServoAttached(servoObject))
+  if (servoCheckServoAttached())
   {
     errorState = ES_OK;
   }
@@ -20,17 +27,18 @@ errorState servoInitialization(Servo servoObject, u8 servoPin)
 
 
 
-errorState servoSetServoAngle(Servo servoObject, s16 servoAngle)
+errorState servoSetServoAngle(s16 servoAngle)
 {
   errorState  errorState = ES_NOK;
-   servoObject.write(servoAngle);
+  servoObject.write(servoAngle);
+  delay(15);
   errorState = ES_OK;
 
   return errorState;
 }
 
 
-bool static servoCheckServoAttached(Servo servoObject)
+bool static servoCheckServoAttached()
 {
-   return servoObject.attached();
+  return servoObject.attached();
 }
