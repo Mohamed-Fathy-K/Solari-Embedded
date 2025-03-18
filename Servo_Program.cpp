@@ -4,7 +4,8 @@
 #include <ESP32Servo.h>
 #include "Servo_Interface.h"
 
-Servo servoObject;
+Servo verticalServoObject;
+Servo horizontalServoObject;
 
 errorState servoInitialization(u8 servoPin)
 {
@@ -14,12 +15,32 @@ errorState servoInitialization(u8 servoPin)
   ESP32PWM::allocateTimer(1);
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
-  servoObject.setPeriodHertz(50);    // standard 50 hz servo
-  servoObject.attach(servoPin, 500, 2400);
+  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  {
+    horizontalServoObject.setPeriodHertz(50);    // standard 50 hz servo
+    horizontalServoObject.attach(servoPin, 500, 2400);
+    errorState = ES_OK;
+    Serial.println("Initialization of Horizontal done");
+  }
+  else if (servoPin == VERTICAL_SERVO_MOTOR)
+  {
+    verticalServoObject.setPeriodHertz(50);    // standard 50 hz servo
+    verticalServoObject.attach(servoPin, 500, 2400);
+    errorState = ES_OK;
+    Serial.println("Initialization of Vertical done");
+  }
+  else
+  {
+    return errorState;
+  }
 
-  if (servoCheckServoAttached())
+  if (servoCheckServoAttached(servoPin))
   {
     errorState = ES_OK;
+  }
+  else
+  {
+    errorState = ES_NOK;
   }
 
   return errorState;
@@ -27,18 +48,44 @@ errorState servoInitialization(u8 servoPin)
 
 
 
-errorState servoSetServoAngle(s16 servoAngle)
+errorState servoSetServoAngle(u8 servoPin, s16 servoAngle)
 {
   errorState  errorState = ES_NOK;
-  servoObject.write(servoAngle);
-  delay(15);
-  errorState = ES_OK;
+
+  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  {
+    horizontalServoObject.write(servoAngle);
+    delay(15);
+    errorState = ES_OK;
+    Serial.println("Movement of Horizontal done");
+  }
+  else if (servoPin == VERTICAL_SERVO_MOTOR)
+  {
+    verticalServoObject.write(servoAngle);
+    delay(15);
+    errorState = ES_OK;
+    Serial.println("Movement of VERTICAL done");
+  }
+  else
+  {
+    errorState = ES_NOK;
+  }
 
   return errorState;
 }
 
 
-bool static servoCheckServoAttached()
+bool static servoCheckServoAttached(u8 servoPin)
 {
-  return servoObject.attached();
+
+  bool isAttached = false;
+  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  {
+    isAttached = horizontalServoObject.attached();
+  }
+  else
+  {
+    isAttached = verticalServoObject.attached();
+  }
+  return isAttached;
 }
