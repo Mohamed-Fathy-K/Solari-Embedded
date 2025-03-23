@@ -1,9 +1,5 @@
 #include "MQTT.h"
 
-/* configure the MQTT client */
-WiFiClientSecure nodeClient;
-PubSubClient client(nodeClient);
-
 errorState WiFi_setup() {
   errorState errorState = ES_NOK;
 
@@ -23,6 +19,10 @@ errorState WiFi_setup() {
 }
 
 /*******************************************************************************************/
+/* configure the MQTT client */
+WiFiClientSecure nodeClient;
+PubSubClient client(nodeClient);
+
 errorState MQTT_setup(char *server, uint16_t port, void (*pf_callback) (char * , byte *, unsigned int)) {
   errorState errorState = ES_NOK;
 
