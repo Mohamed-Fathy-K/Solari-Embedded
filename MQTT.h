@@ -15,8 +15,8 @@
   #include <WiFi.h>
 #endif
 
-#define WIFI_SSID "Gewana"
-#define WIFI_PASSWORD "171823_Abeer"
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
 
 
 /* MQTT Macros*/
