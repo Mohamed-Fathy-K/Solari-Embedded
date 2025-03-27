@@ -1,4 +1,5 @@
 #include "voltageSensor.h"
+#include "ERROR_STATE.h" // Include ERROR_STATE.h for error handling
 #include <Arduino.h>
 #include <cstdint> // For fixed-width integer types
 
@@ -26,14 +27,15 @@ static bool isAdcPinValid(int8_t pinNumber)
 // Function to calculate the voltage from an ADC pin
 // Parameters:
 //   pinNumber - The ADC pin number to read the voltage from
+//   voltage - A reference to a float variable where the calculated voltage will be stored
 // Returns:
-//   The calculated voltage as a float, or -100.0f if the pin is invalid
-float CalculateVoltage(int8_t pinNumber)
+//   errorState - ES_OK if the voltage is calculated successfully, ES_OUT_OF_RANGE if the pin is invalid
+errorState CalculateVoltage(int8_t pinNumber, float &voltage)
 {
     // Validate if the pin number is an ADC pin
     if (!isAdcPinValid(pinNumber))
     {
-        return -100.0f; // Return an error value if the pin is not a valid ADC pin
+        return ES_OUT_OF_RANGE; // Return ES_OUT_OF_RANGE if the pin is not a valid ADC pin
     }
 
     // Read the analog input from the specified ADC pin
@@ -43,9 +45,8 @@ float CalculateVoltage(int8_t pinNumber)
     float voltage_adc = ((float)adc_value * REF_VOLTAGE) / ADC_RESOLUTION;
 
     // Calculate the voltage at the sensor input
-    float voltage_in = voltage_adc * 5.0f; // Adjust for the voltage divider ratio
-    voltage_in += 0.6f; // Add 0.6V to account for the voltage drop across the diode
+    voltage = voltage_adc * 5.0f; // Adjust for the voltage divider ratio
+    voltage += 0.6f; // Add 0.6V to account for the voltage drop across the diode
 
-    // Return the calculated voltage
-    return voltage_in;
+    return ES_OK; // Return ES_OK if the voltage is calculated successfully
 }
