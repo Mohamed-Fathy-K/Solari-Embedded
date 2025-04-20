@@ -1,10 +1,11 @@
-#ifndef Pumb_INTERFACE_H_
-#define Pumb_INTERFACE_H_
+#ifndef PUMP_INTERFACE_H_
+#define PUMP_INTERFACE_H_
+#include "ERROR_STATE.h"
+#include "STD_TYPES.h"
+#define PUMP_PIN 4
 
-#define    PUMBPIN      4
+errorState PumpInitialize(u8 pin_number);
+errorState PumpTurnOn(u8 pin_number);
+errorState PumpTurnOff(u8 pin_number);
 
-errorState pumpInitialization(u8 pinNumber);
-errorState pumpTurnOnPumb(u8 pinNumber);
-errorState pumpTurnOffPumb(u8 pinNumber);
-
-#endif /* Pumb_INTERFACE_H_ */
+#endif /* PUMP_INTERFACE_H_ */

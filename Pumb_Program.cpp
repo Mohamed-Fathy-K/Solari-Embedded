@@ -3,33 +3,33 @@
 #include "STD_TYPES.h"
 #include "Pumb_Interface.h"
 
-errorState pumpInitialization(u8 pinNumber)
+errorState PumpInitialize(u8 pin_number)
 {
-  errorState  errorState = ES_NOK;
+  errorState error_state = ES_NOK;
 
-  pinMode(pinNumber, OUTPUT);
-  digitalWrite(pinNumber, LOW);
+  pinMode(pin_number, OUTPUT);
+  digitalWrite(pin_number, LOW);
 
-  errorState = ES_OK;
+  error_state = ES_OK;
+  return error_state;
 }
 
-
-errorState pumpTurnOnPumb(u8 pinNumber)
+errorState PumpTurnOn(u8 pin_number)
 {
+  errorState error_state = ES_NOK;
 
-  errorState  errorState = ES_NOK;
+  digitalWrite(pin_number, HIGH);
 
-  digitalWrite(pinNumber, HIGH);
-
-  errorState = ES_OK;
+  error_state = ES_OK;
+  return error_state;
 }
 
-errorState pumpTurnOffPumb(u8 pinNumber)
+errorState PumpTurnOff(u8 pin_number)
 {
+  errorState error_state = ES_NOK;
 
-  errorState  errorState = ES_NOK;
+  digitalWrite(pin_number, LOW);
 
-  digitalWrite(pinNumber, LOW);
-  
-  errorState = ES_OK;
+  error_state = ES_OK;
+  return error_state;
 }
