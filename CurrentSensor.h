@@ -4,26 +4,20 @@
 #include <cstdint>             // For fixed-width integer types
 #include "ERROR_STATE.h"       // Include errorState for error handling
 
-// Macros for ADC and sensor configuration
-#define ADC_REF_VOLTAGE    5.0       // Reference voltage of the ADC (in volts)
-#define ADC_RESOLUTION     4096      // ADC resolution (12-bit for ESP32)
-#define ACS712_SENSITIVITY 185.0     // Sensitivity of ACS712 sensor (mV/A for 5A version)
+/*
+// ACS712 5A Sensor Pin (adjust to your ESP32 pin)
+#define ACS712_PIN 13 // Example: GPIO 36
 
-// Function to calculate the average current value
-// Parameters:
-//   adcPin - The ADC pin number to read from
-//   averageCurrent - A reference to a float variable where the calculated average current will be stored
-//   sampleCount - The number of samples to average
-// Returns:
-//   errorState - ES_OK if the current is calculated successfully, ES_OUT_OF_RANGE if the pin is invalid
-errorState calculateCurrent(int8_t adcPin, float &averageCurrent, int16_t sampleCount);
+// ACS712 Sensitivity (mV/A) for 5A version
+#define SENSITIVITY 185.0 // mV/A
 
-// Function to initialize the zero current voltage
-// Parameters:
-//   adcPin - The ADC pin number to read from
-//   sampleCount - The number of samples to average for zero current voltage calculation
-// Returns:
-//   errorState - ES_OK if the initialization is successful, ES_OUT_OF_RANGE if the pin is invalid
-errorState initializeZeroCurrentVoltage(int8_t adcPin, int16_t sampleCount);
+// VCC of the ACS712 (usually 5V or 3.3V)
+#define VCC 5 // Adjust if needed
+
+// ADC Resolution of ESP32 (4096 for 12-bit)
+#define ADC_RESOLUTION 4096
+*/
+errorState currentInitialize();
+errorState currentMeasure(float &current);
 
 #endif /* CURRENT_SENSOR_H_ */

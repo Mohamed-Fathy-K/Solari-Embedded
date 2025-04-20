@@ -3,79 +3,64 @@
 #include "ERROR_STATE.h"       // Include errorState for error handling
 #include "CurrentSensor.h"     // Include CurrentSensor header for macros and function declarations
 
-// Zero current voltage (in volts)
-static float g_zeroCurrentVoltage = 0.0f;
+// ACS712 5A Sensor Pin (adjust to your ESP32 pin)
+const int ACS712_PIN = 13; // Example: GPIO 36
 
-// List of valid ADC pins for ESP32
-static const int8_t g_validAdcPins[] = {36, 39, 34, 35, 32, 33, 2, 4, 12, 13, 14, 15, 25, 26, 27};
-static const int8_t g_numValidAdcPins = sizeof(g_validAdcPins) / sizeof(g_validAdcPins[0]);
+// ACS712 Sensitivity (mV/A) for 5A version
+const float SENSITIVITY = 185.0; // mV/A
 
-// Static function to validate if the pin is an ADC pin
-static bool isAdcPinValid(int8_t pinNumber)
+// Zero Current Voltage (V)
+float zeroVoltage;
+
+// VCC of the ACS712 (usually 5V or 3.3V)
+const float VCC = 5; // Adjust if needed
+
+// ADC Resolution of ESP32 (4096 for 12-bit)
+const int ADC_RESOLUTION = 4096;
+
+errorState currentInitialize()
 {
-    for (int8_t i = 0; i < g_numValidAdcPins; i++)
-    {
-        if (pinNumber == g_validAdcPins[i])
-        {
-            return true; // Pin is valid
-        }
-    }
-    return false; // Pin is not valid
-}
+    errorState error_state = ES_NOK;
 
-// Static function to calculate the average of multiple ADC readings
-static float calculateAdcAverage(int8_t adcPin, int16_t sampleCount)
-{
-    float adcSum = 0.0f;
-
-    for (int16_t i = 0; i < sampleCount; i++)
-    {
-        adcSum += analogRead(adcPin);
+    // Calculate the zero current voltage by averaging multiple readings
+    float sum = 0;
+    for (int i = 0; i < 100; i++) {
+        sum += analogRead(ACS712_PIN);
         delay(1); // Small delay for stable readings
     }
+    zeroVoltage = (sum / 100.0) * (VCC / ADC_RESOLUTION);
 
-    return adcSum / sampleCount;
+    Serial.print("Zero Voltage: ");
+    Serial.print(zeroVoltage);
+    Serial.println(" V");
+
+    error_state = ES_OK;
+    return error_state;
 }
 
-// Static function to calculate the average current over multiple readings
-static float calculateAverageCurrent(int8_t adcPin, int16_t sampleCount)
+errorState currentMeasure(float &current)
 {
-    // Calculate the average ADC value using the calculateAdcAverage function
-    float avgAdcValue = calculateAdcAverage(adcPin, sampleCount);
+    errorState error_state = ES_NOK;
 
-    // Convert the ADC value to voltage
-    float voltage = avgAdcValue * (ADC_REF_VOLTAGE / ADC_RESOLUTION);
-
-    // Calculate and return the average current (Amps)
-    return (voltage - g_zeroCurrentVoltage) / (ACS712_SENSITIVITY / 1000.0f); // Convert mV to V
-}
-
-// Function to calculate the average current value
-errorState calculateCurrent(int8_t adcPin, float &averageCurrent, int16_t sampleCount)
-{
-    // Validate if the pin number is an ADC pin
-    if (!isAdcPinValid(adcPin))
-    {
-        return ES_OUT_OF_RANGE; // Return error if the pin is invalid
+    // Read the analog voltage from the ACS712
+    int sensorValue;
+    float sum = 0;
+    for (int i = 0; i < 1000; i++) {
+        sensorValue = analogRead(ACS712_PIN); // Store the raw ADC reading
+        // Convert the analog reading to voltage
+        float voltage = sensorValue * (VCC / ADC_RESOLUTION);
+        // Calculate the current (Amps)
+        float measured_current = (voltage - zeroVoltage) / (SENSITIVITY / 1000.0); // Convert mV to V
+        sum += measured_current;
     }
+    sum /= 1000.0;
+    current = sum;
 
-    // Use the static function to calculate the average current
-    averageCurrent = calculateAverageCurrent(adcPin, sampleCount);
+    // Print the current and ADC value to the Serial Monitor
+    Serial.print(" , Current: ");
+    Serial.print(current);
+    Serial.println(" A");
 
-    return ES_OK; // Return success
-}
-
-// Function to initialize the zero current voltage
-errorState initializeZeroCurrentVoltage(int8_t adcPin, int16_t sampleCount)
-{
-    // Validate if the pin number is an ADC pin
-    if (!isAdcPinValid(adcPin))
-    {
-        return ES_OUT_OF_RANGE; // Return error if the pin is invalid
-    }
-
-    // Calculate and update the zero current voltage
-    g_zeroCurrentVoltage = calculateAdcAverage(adcPin, sampleCount) * (ADC_REF_VOLTAGE / ADC_RESOLUTION);
-
-    return ES_OK; // Return success
+    error_state = ES_OK;
+    return error_state;
 }
