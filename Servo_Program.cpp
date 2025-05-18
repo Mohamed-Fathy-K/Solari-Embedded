@@ -18,14 +18,14 @@ errorState servoInitialization(u8 servoPin)
   if (servoPin == HORIZONTAL_SERVO_MOTOR)
   {
     horizontalServoObject.setPeriodHertz(50);    // standard 50 hz servo
-    horizontalServoObject.attach(servoPin, 500, 2400);
+    horizontalServoObject.attach(servoPin, 900, 2100);
     errorState = ES_OK;
     Serial.println("Initialization of Horizontal done");
   }
-  else if (servoPin == VERTICAL_SERVO_MOTOR)
+  else if (servoPin == VERTICAL1_MOTOR || servoPin == VERTICAL2_MOTOR)
   {
     verticalServoObject.setPeriodHertz(50);    // standard 50 hz servo
-    verticalServoObject.attach(servoPin, 500, 2400);
+    verticalServoObject.attach(servoPin, 500, 2500);
     errorState = ES_OK;
     Serial.println("Initialization of Vertical done");
   }
