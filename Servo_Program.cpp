@@ -15,7 +15,7 @@ errorState servoInitialization(u8 servoPin)
   ESP32PWM::allocateTimer(1);
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
-  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  if (servoPin == HORIZONTAL_MOTOR)
   {
     horizontalServoObject.setPeriodHertz(50);    // standard 50 hz servo
     horizontalServoObject.attach(servoPin, 900, 2100);
@@ -52,14 +52,14 @@ errorState servoSetServoAngle(u8 servoPin, s16 servoAngle)
 {
   errorState  errorState = ES_NOK;
 
-  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  if (servoPin == HORIZONTAL_MOTOR)
   {
     horizontalServoObject.write(servoAngle);
     delay(15);
     errorState = ES_OK;
     Serial.println("Movement of Horizontal done");
   }
-  else if (servoPin == VERTICAL_SERVO_MOTOR)
+  else if (servoPin == VERTICAL1_MOTOR || servoPin == VERTICAL2_MOTOR)
   {
     verticalServoObject.write(servoAngle);
     delay(15);
@@ -79,7 +79,7 @@ bool static servoCheckServoAttached(u8 servoPin)
 {
 
   bool isAttached = false;
-  if (servoPin == HORIZONTAL_SERVO_MOTOR)
+  if (servoPin == HORIZONTAL_MOTOR)
   {
     isAttached = horizontalServoObject.attached();
   }
