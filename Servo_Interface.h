@@ -2,9 +2,9 @@
 #define SERVO_INTERFACE_H_
 
 
-#define  HORIZONTAL_SERVO_MOTOR   12
-#define  VERTICAL_SERVO_MOTOR     13
-
+#define  HORIZONTAL_MOTOR         12
+#define  VERTICAL1_MOTOR          13
+#define  VERTICAL2_MOTOR          14
 
 errorState servoInitialization(u8 servoPin);
 
