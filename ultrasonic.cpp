@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "ultrasonic.h"
 #include "ERROR_STATE.h"
-
+/*
 void UltrasonicInit()
 {
   pinMode(TRIG_PIN, OUTPUT);
@@ -31,4 +31,4 @@ void UltrasonicPrintDistance() {
   Serial.print(distance);
   Serial.println(" cm");
 }
-
+*/

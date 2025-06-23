@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "ERROR_STATE.h"
 #include "LDR.h"
-
+/*
 
 
 void LdrInit()
@@ -50,3 +50,4 @@ errorState LdrPrintPercentage(u8 ldrPin)
     Serial.println(ldrPercentage);   
 	return errorState;
 }
+*/

@@ -5,9 +5,10 @@
 /**************   Version: 1.00        ***************/
 /*****************************************************/
 /*****************************************************/
+
 #ifndef STD_TYPES_H_
 #define STD_TYPES_H_
-
+/*
 
 typedef unsigned char         u8;
 typedef unsigned short int    u16;
@@ -20,5 +21,5 @@ typedef double                f64;
 typedef long double           f128;
 
 #define NULL              ((void*)0)
-
+*/
 #endif /* STDTYPES_H_ */

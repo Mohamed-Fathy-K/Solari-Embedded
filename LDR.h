@@ -1,6 +1,6 @@
 #ifndef LDR_H
 #define LDR_H
-
+/*
 
 #define LDR_UP_LEFT_PIN 	A0
 #define LDR_UP_RIGHT_PIN 	A2
@@ -13,5 +13,5 @@ void LdrInit();
 errorState LdrCalculatePercentage(u8 ldrPin, u32* ldrPercentage);
 errorState LdrPrintPercentage(u8 ldrPin);
 
-
+*/
 #endif
