@@ -4,10 +4,6 @@ volatile float current = 0.0;
 volatile float voltage = 0.0;
 volatile float power = 0.0;
 
-char currentSetence[30] = "";
-char voltageSetence[30] = "";
-char powerSetence[30] = "";
-
 float getCurrent(void) {
   static float current = 8.3;
   return (current + 0.1);
@@ -28,6 +24,37 @@ void mqttCallback(char *topic , byte *payload, unsigned int length) {
   }
 }
 
+void sendReadings() {
+
+  // Free the heap before allocation
+  ESP.getFreeHeap();
+  // Allocating the heap
+  DynamicJsonDocument doc(MQTT_MAX_PACKET_SIZE);
+  // Free the heap after allocation
+  ESP.getFreeHeap();
+  JsonArray readings = doc.createNestedArray("readings");
+
+  for(uint8_t i = 0; i < 60; i++) {
+    JsonObject record = readings.createNestedObject(); 
+    // Storing the data into the object
+    record["id"] = MQTT_CLIENT_ID;
+    record["v"] = getVoltage();
+    record["i"] = getCurrent();
+    record["p"] = getPower();
+    delay(1000);
+  }
+  
+
+  String jsonStr;
+  serializeJson(doc, jsonStr);
+  Serial.print("Payload size: ");
+  Serial.println(jsonStr.length());
+  Serial.println(jsonStr.c_str());
+  
+  // Publish to the broker
+  MQTT_publish(MQTT__PUBLISH_TOPIC, jsonStr.c_str(), RETAINED_MESSAGE);
+}
+
 void setup() {
   Serial.begin(115200);
   
@@ -45,18 +72,7 @@ void setup() {
 void loop() {
   MQTT_maintainConnection();
 
-  current = getCurrent();
-  voltage = getVoltage();
-  power = getPower();
-
-  sprintf(currentSetence, "current = %.2f", current);
-  sprintf(voltageSetence, "voltage = %.2f", voltage);
-  sprintf(powerSetence, "power = %.2f", power);
-
-  MQTT_publish(MQTT_CURRENT_PUBLISH_TOPIC, currentSetence, RETAINED_MESSAGE);
-  MQTT_publish(MQTT_VOLTAGE_PUBLISH_TOPIC, voltageSetence, RETAINED_MESSAGE);
-  MQTT_publish(MQTT_POWER_PUBLISH_TOPIC, powerSetence, RETAINED_MESSAGE);
-
+  sendReadings();
   delay(500);
   
 }

@@ -31,6 +31,7 @@ errorState MQTT_setup(char *server, uint16_t port, void (*pf_callback) (char * ,
     client.setCallback(pf_callback);
     client.setKeepAlive(KEEPALIVE);
 
+    client.setBufferSize(MQTT_MAX_PACKET_SIZE);
     nodeClient.setInsecure();
     
     while(!client.connected()) {

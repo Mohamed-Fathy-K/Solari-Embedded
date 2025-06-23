@@ -2,12 +2,13 @@
 #define MQTT_H_
 
 #include "ERROR_STATE.h"
+#include <ArduinoJson.h>
 #include <stdint.h>
 
 /* WiFi Macros*/
 #define ESP8266_BOARD 0
 #define ESP32_BOARD 1
-#define ESP_BOARD ESP32_BOARD
+#define ESP_BOARD ESP8266_BOARD
 
 #if ESP_BOARD == ESP8266_BOARD
   #include <ESP8266WiFi.h>
@@ -15,23 +16,22 @@
   #include <WiFi.h>
 #endif
 
-#define WIFI_SSID "realme 5"
-#define WIFI_PASSWORD "12345678"
+#define WIFI_SSID "Gewana"
+#define WIFI_PASSWORD "171823_Abeer"
 
 
 /* MQTT Macros*/
 #include <PubSubClient.h>
 #include <WiFiClientSecure.h>
 
+#define MQTT_MAX_PACKET_SIZE 3072
 #define MQTT_SERVER "7ecb7163642946fe9098e05b57857ef6.s1.eu.hivemq.cloud"
 #define MQTT_PORT 8883
-#define MQTT_USER "hivemq.webclient.1742559886790"
-#define MQTT_PASSWORD ":E4;2?.0Dc6GBAbsCkar"
-#define MQTT_CURRENT_PUBLISH_TOPIC "solari/current"
-#define MQTT_VOLTAGE_PUBLISH_TOPIC "solari/voltage"
-#define MQTT_POWER_PUBLISH_TOPIC "solari/power"
+#define MQTT_USER "hivemq.webclient.1750694724910"
+#define MQTT_PASSWORD "cmti4I78,Cu<SNZf:0.M"
+#define MQTT__PUBLISH_TOPIC "solari/readings"
 #define MQTT_SUBSCRIBE_TOPIC "web/solari"
-#define MQTT_CLIENT_ID "Solari2025"
+#define MQTT_CLIENT_ID "Solari"
 
 #define QOS0 0
 #define QOS1 1
