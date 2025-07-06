@@ -2,6 +2,7 @@
 #define MQTT_H_
 
 #include "ERROR_STATE.h"
+#include <ArduinoJson.h>
 #include <stdint.h>
 
 /* WiFi Macros*/
@@ -23,13 +24,16 @@
 #include <PubSubClient.h>
 #include <WiFiClientSecure.h>
 
+#define MQTT_MAX_PACKET_SIZE 3072
 #define MQTT_SERVER "7ecb7163642946fe9098e05b57857ef6.s1.eu.hivemq.cloud"
 #define MQTT_PORT 8883
-#define MQTT_USER "hivemq.webclient.1742559886790"
-#define MQTT_PASSWORD ":E4;2?.0Dc6GBAbsCkar"
-#define MQTT_PUBLISH_TOPIC "node/solari"
-#define MQTT_SUBSCRIBE_TOPIC "web/solari"
-#define MQTT_CLIENT_ID "Solari2025"
+#define MQTT_USER "hivemq.webclient.1750694724910"
+#define MQTT_PASSWORD "cmti4I78,Cu<SNZf:0.M"
+#define MQTT_READINGS_PUBLISH_TOPIC "solari/readings"
+#define MQTT_FAULTS_PUBLISH_TOPIC "solari/faults"
+#define MQTT_WATER_LEVEL_PUBLISH_TOPIC "solari/water_level"
+#define MQTT_SUBSCRIBE_TOPIC "solari/cleaning_time"
+#define MQTT_CLIENT_ID "Solari"
 
 #define QOS0 0
 #define QOS1 1
@@ -52,7 +56,7 @@
  */
 #define RETAINED_MESSAGE false
  
-#define LWT_TOPIC "node/solari"
+#define LWT_TOPIC "solari/"
 #define LWT_MESSAGE "Solari is disconnected"
 #define LWT_QOS QOS0
 #define LWT_RETAINED_STATE true
